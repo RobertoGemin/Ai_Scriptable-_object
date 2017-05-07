@@ -23,12 +23,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
         }
 
-        private void OnCollisionEnter(Collision collision)
-        {
-
-        Debug.Log(collision.ToString() + " other");
         
-            }
 
         private void OnTriggerEnter(Collider other)
         {

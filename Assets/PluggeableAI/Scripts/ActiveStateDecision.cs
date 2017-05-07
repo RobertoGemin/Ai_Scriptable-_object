@@ -7,7 +7,7 @@ using Complete;
 public class ActiveStateDecision : Decision{
     public override bool Decide(StateController controller)
     {
-        bool chaseTargetIsActive = controller.chaseTarget.gameObject.activeSelf;
+        bool chaseTargetIsActive = controller.aiHealth.isDead; ///controller.chaseTarget.gameObject.activeSelf;
         return chaseTargetIsActive;
    }
 

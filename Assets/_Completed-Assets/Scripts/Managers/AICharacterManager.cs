@@ -18,10 +18,12 @@ namespace Complete
         public GameObject m_Instance;         // A reference to the instance of the Ai Character when it is created.
         [HideInInspector]
         public int m_Wins;                    // The number of wins this player has so far.
+        [HideInInspector]
+        public AIHealth aiHealth;
 
-        
+
         private UnityStandardAssets.Characters.ThirdPerson.ThirdPersonCharacter m_Movement;                        // Reference to tank's movement script, used to disable and enable control.
-        public Complete.PlayerShooting m_Shooting;                        // Reference to tank's shooting script, used to disable and enable control.
+        private Complete.PlayerShooting m_Shooting;                        // Reference to tank's shooting script, used to disable and enable control.
         private GameObject m_CanvasGameObject;                  // Used to disable the world space UI during the Starting and Ending phases of each round.
         private StateController m_StateController;              // Reference to the StateController for AI tanks
 
@@ -29,9 +31,10 @@ namespace Complete
         public void SetupAI(List<Transform> wayPointList){
             m_StateController = m_Instance.GetComponent<StateController>();
             m_StateController.SetupAI(true, wayPointList);
-            
+            aiHealth = m_Instance.GetComponent<AIHealth>();
+
             // find gameobject in child where the shooting script is
-          
+
             m_Shooting = m_Instance.GetComponent<Complete.PlayerShooting>();
             m_Shooting.m_PlayerNumber = m_PlayerNumber;
             //m_Instance.ac
@@ -71,11 +74,18 @@ namespace Complete
         // Used at the start of each round to put the tank into it's default state.
         public void Reset()
         {
+            aiHealth.ResetAnimation();
+            m_StateController.resetNavMeshAgent();
             m_Instance.transform.position = m_SpawnPoint.position;
             m_Instance.transform.rotation = m_SpawnPoint.rotation;
+            
+            m_Shooting.DisableEffects();
 
+
+            /*
             m_Instance.SetActive(false);
             m_Instance.SetActive(true);
+            */
         }
 
 
