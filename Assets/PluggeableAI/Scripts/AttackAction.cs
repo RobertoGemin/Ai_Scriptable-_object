@@ -15,21 +15,22 @@ public class AttackAction : Action {
     private void Attack(StateController controller)
     {
         RaycastHit hit;
+        Ray shootRay = new Ray();
+        shootRay.origin = controller.eyes.position;
+        shootRay.direction = controller.eyes.forward;
 
+
+        //controller.navMeshAgent.isStopped = false;
         Debug.DrawRay(controller.eyes.position, controller.eyes.forward.normalized * controller.enemyStats.attackRange, Color.red);
 
-        if (Physics.SphereCast(controller.eyes.position, controller.enemyStats.lookSphereCastRadius, controller.eyes.forward, out hit, controller.enemyStats.attackRange)
-            && hit.collider.CompareTag("Player"))
-        {
-            if (controller.checkIfCountDownElapsed(controller.enemyStats.attackRate))
-            {
-                // Debug.Log(" fire ");
-                //Complete.TankShooting tankShooting ;
-                // tankShooting = GetComponent<Complete.TankShooting>();
-
-                controller.aiShooting.Shoot();
-               // controller.tankShooting.Fire(controller.enemyStats.attackForce,controller.enemyStats.attackRate);
-                //controller.tankShooting.Fire(1f,1f);
+        if (!controller.aiHealth.isDead) {
+           // if (Physics.Raycast(shootRay, out shootHit, range, shootableMask))
+             if (Physics.SphereCast(controller.eyes.position, controller.enemyStats.lookSphereCastRadius, controller.eyes.forward, out hit, controller.enemyStats.attackRange)
+               && hit.collider.CompareTag("Player"))                {
+                    if (controller.checkIfCountDownElapsed(controller.enemyStats.attackRate)){
+                   // controller.navMeshAgent.isStopped = true;
+                    controller.aiShooting.canShoot = true;
+                }
             }
         }
     }

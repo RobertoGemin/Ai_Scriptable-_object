@@ -16,11 +16,11 @@ public class StateController : MonoBehaviour {
 
     public UnityEngine.AI.NavMeshAgent navMeshAgent;
     // public Complete.TankShooting tankShooting;
-    public Complete.TankShooting tankShooting;
+   // public Complete.TankShooting tankShooting;
     // public Complete.TankShooting tankShooting;
     public Complete.PlayerShooting aiShooting;
 
-    // public NewComplete.TankShooting newTankshooting;
+    [HideInInspector]public AIHealth aiHealth;// check health
     public List<Transform> wayPointlist;
     [HideInInspector]public int nextWaypoint;
     [HideInInspector]public Transform chaseTarget;
@@ -34,23 +34,27 @@ public class StateController : MonoBehaviour {
 	void Awake() {
         aiShooting = GetComponent<Complete.PlayerShooting>();
         navMeshAgent = GetComponentInChildren<UnityEngine.AI.NavMeshAgent>();
-    }
+        aiHealth = GetComponent<AIHealth>();
+        }
 
-    public void SetupAI(bool aiActivationFromTankManager, List<Transform> wayPointsFromTankManager){
+
+
+        public void resetNavMeshAgent() {
+            navMeshAgent.enabled = true;
+
+
+        }
+
+        public void SetupAI(bool aiActivationFromTankManager, List<Transform> wayPointsFromTankManager){
         wayPointlist = wayPointsFromTankManager;
-        aiActive = aiActivationFromTankManager;
-        if (aiActive){
-       //     navMeshAgent.enabled = true;
-        }
-        else {
-         //   navMeshAgent.enabled = false;
-        }
+        aiActive = aiActivationFromTankManager;//verwijderen
     }
 
 	// Update is called once per frame
 	void Update () {
-        if (!aiActive){
-            return;
+        if (aiHealth.isDead){
+                navMeshAgent.enabled = false;
+                return;
         }
         else {
             currentState.UpdateState(this);

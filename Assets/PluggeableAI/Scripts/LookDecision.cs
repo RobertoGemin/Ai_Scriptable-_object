@@ -12,7 +12,14 @@ public class LookDecision : Decision {
 
     public override bool Decide(StateController controller)
     {
-        bool targetVisible = Look(controller);
+        bool targetVisible;
+        if (!controller.aiHealth.isDead){
+            targetVisible = Look(controller);
+        }
+        else{
+            targetVisible = false;
+        }
+   
         return targetVisible;
     }
 

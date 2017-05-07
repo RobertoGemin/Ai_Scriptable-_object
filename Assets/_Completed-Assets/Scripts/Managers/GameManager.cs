@@ -212,9 +212,14 @@ namespace Complete
             // Go through all the tanks...
             for (int i = 0; i < m_AICharacter.Length; i++)
             {
+
                 // ... and if they are active, increment the counter.
-                if (m_AICharacter[i].m_Instance.activeSelf)
+                //if (m_AICharacter[i].m_Instance.activeSelf){
+
+                if(!m_AICharacter[i].aiHealth.isDead){ 
                     numTanksLeft++;
+                   // m_AICharacter[i].m_Instance.A
+                }
             }
 
             // If there are one or fewer tanks remaining return true, otherwise return false.
