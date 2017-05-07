@@ -17,8 +17,9 @@ public class AIHealth : MonoBehaviour
     AudioSource enemyAudio;                     // Reference to the audio source.
     ParticleSystem hitParticles;                // Reference to the particle system that plays when the enemy is damaged.
     CapsuleCollider capsuleCollider;            // Reference to the capsule collider.
-    bool isDead;                                // Whether the enemy is dead.
-    bool isSinking;                             // Whether the enemy has started sinking through the floor.
+    public bool isDead;                                // Whether the enemy is dead.
+    bool isSinking;
+    Rigidbody rigbodyGravity;  // Whether the enemy has started sinking through the floor.
 
 
 
@@ -29,7 +30,7 @@ public class AIHealth : MonoBehaviour
         enemyAudio = GetComponent<AudioSource>();
         hitParticles = GetComponentInChildren<ParticleSystem>();
         capsuleCollider = GetComponent<CapsuleCollider>();
-
+        rigbodyGravity = GetComponent<Rigidbody>();
         // Setting the current health when the enemy first spawns.
         currentHealth = startingHealth;
 
@@ -74,14 +75,24 @@ public class AIHealth : MonoBehaviour
         }
     }
 
+    public void ResetAnimation()
+    {
+        //rigbodyGravity.useGravity.;
+        capsuleCollider.enabled = true;
+        isDead = false;
+        currentHealth = startingHealth;
+        anim.SetBool("IsDead", isDead);
+        anim.SetLayerWeight(1, 1);
 
+    }
     void Death()
     {
         // The enemy is dead.
         isDead = true;
-
+      //  rigbodyGravity.useGravity = false;
+        capsuleCollider.enabled =false;
         // Turn the collider into a trigger so shots can pass through it.
-       //capsuleCollider.isTrigger = true;
+        //capsuleCollider.isTrigger = true;
 
         // Tell the animator that the enemy is dead.
 
@@ -92,7 +103,9 @@ public class AIHealth : MonoBehaviour
         // Change the audio clip of the audio source to the death clip and play it (this will stop the hurt clip playing).
         enemyAudio.clip = deathClip;
         enemyAudio.Play();
-        gameObject.SetActive(false);
+
+
+      //  gameObject.SetActive(false);
     }
 
 

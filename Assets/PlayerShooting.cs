@@ -10,7 +10,7 @@ namespace Complete
         public int damagePerShot = 20;                  // The damage inflicted by each bullet.
         public float timeBetweenBullets = 0.15f;        // The time between each shot.
         public float range = 100f;                      // The distance the gun can fire.
-
+        public bool canShoot;
 
         float timer;                                    // A timer to determine when to fire.
         Ray shootRay = new Ray();                       // A ray from the gun end forwards.
@@ -43,10 +43,12 @@ namespace Complete
 
 
             // If the Fire1 button is being press and it's time to fire...
-            if (Input.GetButton("Fire1") && timer >= timeBetweenBullets && Time.timeScale != 0)
+            if ((canShoot) && timer >= timeBetweenBullets && Time.timeScale != 0)
             {
                 // ... shoot the gun.
                 Shoot();
+                canShoot = false;
+
             }
 
             // If the timer has exceeded the proportion of timeBetweenBullets that the effects should be displayed for...
@@ -67,7 +69,7 @@ namespace Complete
         }
 
 
-       public void Shoot()
+        public void Shoot()
         {
             // Reset the timer.
             timer = 0f;
@@ -93,12 +95,8 @@ namespace Complete
             gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
 
             // Perform the raycast against gameobjects on the shootable layer and if it hits something...
-            if (Physics.Raycast(shootRay, out shootHit, range, shootableMask))
-            {
-                // Try and find an EnemyHealth script on the gameobject hit.
-                AIHealth enemyHealth = shootHit.collider.GetComponent<AIHealth>();
-
-                // If the EnemyHealth component exist...
+            if (Physics.SphereCast(shootRay,1f, out shootHit,range,shootableMask)){
+                AIHealth enemyHealth = shootHit.collider.GetComponent<AIHealth>();       
                 if (enemyHealth != null)
                 {
                     // ... the enemy should take damage.
