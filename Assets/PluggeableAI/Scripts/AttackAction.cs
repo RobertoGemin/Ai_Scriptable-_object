@@ -23,15 +23,18 @@ public class AttackAction : Action {
         //controller.navMeshAgent.isStopped = false;
         Debug.DrawRay(controller.eyes.position, controller.eyes.forward.normalized * controller.enemyStats.attackRange, Color.red);
 
-        if (!controller.aiHealth.isDead) {
-           // if (Physics.Raycast(shootRay, out shootHit, range, shootableMask))
-             if (Physics.SphereCast(controller.eyes.position, controller.enemyStats.lookSphereCastRadius, controller.eyes.forward, out hit, controller.enemyStats.attackRange)
-               && hit.collider.CompareTag("Player"))                {
-                    if (controller.checkIfCountDownElapsed(controller.enemyStats.attackRate)){
-                   // controller.navMeshAgent.isStopped = true;
+        if (!controller.aiHealth.isDead)
+        {
+            // if (Physics.Raycast(shootRay, out shootHit, range, shootableMask))
+            if (Physics.SphereCast(controller.eyes.position, controller.enemyStats.lookSphereCastRadius, controller.eyes.forward, out hit, controller.enemyStats.attackRange))
+            {         //&& hit.collider.CompareTag("Player")//         {
+                if (controller.checkIfCountDownElapsed(controller.enemyStats.attackRate))
+                {
+                    // controller.navMeshAgent.isStopped = true;
                     controller.aiShooting.canShoot = true;
                 }
             }
+        
         }
     }
 }

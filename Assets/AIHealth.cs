@@ -20,7 +20,7 @@ public class AIHealth : MonoBehaviour
     public bool isDead;                                // Whether the enemy is dead.
     bool isSinking;
     Rigidbody rigbodyGravity;  // Whether the enemy has started sinking through the floor.
-
+    
 
 
     // Use this for initialization
@@ -78,11 +78,12 @@ public class AIHealth : MonoBehaviour
     public void ResetAnimation()
     {
         //rigbodyGravity.useGravity.;
+        anim.enabled = true;
         capsuleCollider.enabled = true;
         isDead = false;
         currentHealth = startingHealth;
-        anim.SetBool("IsDead", isDead);
-        anim.SetLayerWeight(1, 1);
+      //  anim.SetBool("IsDead", isDead);
+    //    anim.SetLayerWeight(1, 1);
 
     }
     void Death()
@@ -96,9 +97,9 @@ public class AIHealth : MonoBehaviour
 
         // Tell the animator that the enemy is dead.
 
-        anim.SetBool("IsDead", isDead);
+       // anim.SetBool("IsDead", isDead);
         //start coratian.
-        anim.SetLayerWeight(1, 0);
+      //  anim.SetLayerWeight(1, 0);
 
         // Change the audio clip of the audio source to the death clip and play it (this will stop the hurt clip playing).
         enemyAudio.clip = deathClip;
