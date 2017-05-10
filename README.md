@@ -1,7 +1,7 @@
 # Ai_Scriptable-_object
 using easy editing scripts
  
- rigged body add to ai 
+ ragbody add to ai 
  https://youtu.be/nt0eim_sDPc
  
 update 
