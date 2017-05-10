@@ -5,7 +5,7 @@ namespace Complete
 {
     public class PlayerShooting : MonoBehaviour
     {
-      
+
         public int m_PlayerNumber = 1;              // Used to identify the different players.
         public int damagePerShot = 20;                  // The damage inflicted by each bullet.
         public float timeBetweenBullets = 0.15f;        // The time between each shot.
@@ -16,10 +16,10 @@ namespace Complete
         Ray shootRay = new Ray();                       // A ray from the gun end forwards.
         RaycastHit shootHit;                            // A raycast hit to get information about what was hit.
         int shootableMask;                              // A layer mask so the raycast only hits things on the shootable layer.
-       public ParticleSystem gunParticles;                    // Reference to the particle system.
-       public LineRenderer gunLine;                           // Reference to the line renderer.
+        public ParticleSystem gunParticles;                    // Reference to the particle system.
+        public LineRenderer gunLine;                           // Reference to the line renderer.
         public AudioSource gunAudio;                           // Reference to the audio source.
-       public Light gunLight;                                 // Reference to the light component.
+        public Light gunLight;                                 // Reference to the light component.
         public Light faceLight;								// Duh
         float effectsDisplayTime = 0.2f;                // The proportion of the timeBetweenBullets that the effects will display for.
 
@@ -30,8 +30,8 @@ namespace Complete
             shootableMask = LayerMask.GetMask("Shootable");
 
             // Set up the references.
-           // gunParticles = GetComponent<ParticleSystem>();
-          
+            // gunParticles = GetComponent<ParticleSystem>();
+
             //faceLight = GetComponentInChildren<Light> ();
         }
 
@@ -95,26 +95,29 @@ namespace Complete
             gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
 
             // Perform the raycast against gameobjects on the shootable layer and if it hits something...
-            if (Physics.SphereCast(shootRay,1f, out shootHit,range,shootableMask)){
-                AIHealth enemyHealth = shootHit.collider.GetComponent<AIHealth>();       
+            if (Physics.SphereCast(shootRay, 1f, out shootHit, range, shootableMask))
+            {
+                AIHealth enemyHealth = shootHit.collider.GetComponent<AIHealth>();
                 if (enemyHealth != null)
                 {
                     // ... the enemy should take damage.
                     enemyHealth.TakeDamage(damagePerShot, shootHit.point);
-                }
-                if (shootHit.rigidbody != null)
-                {
-                    shootHit.rigidbody.AddForce(transform.forward * 5);
-                }
+                    if (shootHit.rigidbody != null)
+                    {
+                        shootHit.rigidbody.AddForce(transform.forward * 5);
+                    }
 
-                Animator ragdoll = shootHit.transform.gameObject.GetComponentInParent<Animator>();
-                CapsuleCollider capsulCollider = shootHit.transform.gameObject.GetComponentInParent<CapsuleCollider>();
-                if (ragdoll != null && capsulCollider != null)
-                {
-                    ragdoll.enabled = false;
-                    capsulCollider.enabled = false;
+                    if (enemyHealth.currentHealth <= 0)
+                    {
+                        Animator ragdoll = shootHit.transform.gameObject.GetComponentInParent<Animator>();
+                        CapsuleCollider capsulCollider = shootHit.transform.gameObject.GetComponentInParent<CapsuleCollider>();
+                        if (ragdoll != null && capsulCollider != null)
+                        {
+                            ragdoll.enabled = false;
+                            capsulCollider.enabled = false;
+                        }
+                    }
                 }
-
 
                 // Set the second position of the line renderer to the point the raycast hit.
                 gunLine.SetPosition(1, shootHit.point);
@@ -125,6 +128,9 @@ namespace Complete
                 // ... set the second position of the line renderer to the fullest extent of the gun's range.
                 gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
             }
+
         }
+
     }
 }
+
