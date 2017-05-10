@@ -102,6 +102,19 @@ namespace Complete
                     // ... the enemy should take damage.
                     enemyHealth.TakeDamage(damagePerShot, shootHit.point);
                 }
+                if (shootHit.rigidbody != null)
+                {
+                    shootHit.rigidbody.AddForce(transform.forward * 5);
+                }
+
+                Animator ragdoll = shootHit.transform.gameObject.GetComponentInParent<Animator>();
+                CapsuleCollider capsulCollider = shootHit.transform.gameObject.GetComponentInParent<CapsuleCollider>();
+                if (ragdoll != null && capsulCollider != null)
+                {
+                    ragdoll.enabled = false;
+                    capsulCollider.enabled = false;
+                }
+
 
                 // Set the second position of the line renderer to the point the raycast hit.
                 gunLine.SetPosition(1, shootHit.point);
