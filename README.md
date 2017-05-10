@@ -1,6 +1,9 @@
 # Ai_Scriptable-_object
 using easy editing scripts
  
+ rigged body add to ai 
+ https://youtu.be/nt0eim_sDPc
+ 
 update 
 7-8-2017
 adding dead animation
