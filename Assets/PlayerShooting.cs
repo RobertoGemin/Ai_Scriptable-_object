@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 
 namespace Complete
@@ -67,7 +69,16 @@ namespace Complete
             faceLight.enabled = false;
             gunLight.enabled = false;
         }
+        IEnumerator waitFrame(Animator animator, Raggdoll ragdoll,CapsuleCollider capsulCollider)
+        {
+            yield return new WaitForSeconds(1f);
+            print("wait 1 sec !");
+            capsulCollider.enabled = false;
+            animator.enabled = false;
 
+            //ragdoll.pelvis.GetComponent<Rigidbody>().AddForce(transform.forward * 5);
+            yield return null;
+        }
 
         public void Shoot()
         {
@@ -95,26 +106,31 @@ namespace Complete
             gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
 
             // Perform the raycast against gameobjects on the shootable layer and if it hits something...
-            if (Physics.SphereCast(shootRay, 1f, out shootHit, range, shootableMask))
-            {
+            if (Physics.SphereCast(shootRay, 1f, out shootHit, range, shootableMask)){
                 AIHealth enemyHealth = shootHit.collider.GetComponent<AIHealth>();
-                if (enemyHealth != null)
-                {
+                if (enemyHealth != null) {
                     // ... the enemy should take damage.
                     enemyHealth.TakeDamage(damagePerShot, shootHit.point);
+                  //  shootHit.rigidbody.constraints &= RigidbodyConstraints.FreezeAll;
+
                     if (shootHit.rigidbody != null)
                     {
-                        shootHit.rigidbody.AddForce(transform.forward * 5);
+                        
                     }
 
                     if (enemyHealth.currentHealth <= 0)
                     {
-                        Animator ragdoll = shootHit.transform.gameObject.GetComponentInParent<Animator>();
-                        CapsuleCollider capsulCollider = shootHit.transform.gameObject.GetComponentInParent<CapsuleCollider>();
-                        if (ragdoll != null && capsulCollider != null)
+                        shootHit.rigidbody.isKinematic = true;
+                        Animator animator = shootHit.transform.gameObject.GetComponent<Animator>();
+                        CapsuleCollider capsulCollider = shootHit.transform.gameObject.GetComponent<CapsuleCollider>();
+                        Raggdoll ragdoll = shootHit.transform.gameObject.GetComponent<Raggdoll>();
+
+                        if (animator != null && capsulCollider != null && capsulCollider.enabled == true )
                         {
-                            ragdoll.enabled = false;
-                            capsulCollider.enabled = false;
+                            ragdoll.enabledParts();
+                           // capsulCollider.enabled = false;
+                            StartCoroutine(waitFrame(animator, ragdoll, capsulCollider));
+
                         }
                     }
                 }
@@ -130,6 +146,9 @@ namespace Complete
             }
 
         }
+
+
+     
 
     }
 }
