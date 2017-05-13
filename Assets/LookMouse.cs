@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LookMouse : MonoBehaviour {
+public class LookMouse : MonoBehaviour
+{
 
     // Use this for initialization
     Camera camera;
+    public float pushspeed;
+   public IEnumerator coroutine;
 
     void Start()
     {
@@ -20,19 +23,51 @@ public class LookMouse : MonoBehaviour {
         {
             print("I'm looking at " + hit.transform.name);
 
-            //hit.transform.gameObject.rigidbody.AddForce(transform.forward * thrust);
-            hit.rigidbody.AddForce(transform.forward * 5);
-
-            Animator die = hit.transform.gameObject.GetComponentInParent<Animator>();
-            if (die != null)
+            if (hit.transform.name == "makeAhuman")
             {
-                die.enabled = false;
+                //hit.rigidbody.AddForce(transform.forward * 5);
+                hit.transform.gameObject.GetComponent<CapsuleCollider>().enabled = false;
+
+                Animator die = hit.transform.gameObject.GetComponent<Animator>();
+                Raggdoll ragdoll = hit.transform.gameObject.GetComponent<Raggdoll>();
+                if (die != null && ragdoll != null)
+                {
+                    print("die.enabled = false; ");
+                    ragdoll.enabledParts();
+                    //  coroutine = WaitAndPrint(2.0f, die);
+                    //   StartCoroutine(coroutine);
+                    StartCoroutine(waitFrame(die,ragdoll));
+                    //waitFrame(die)
+
+                    //die.enabled = false;
+
+                }
             }
+
         }
         else
         {
             print("I'm looking at nothing!");
         }
 
+    }
+
+
+    IEnumerator waitFrame(Animator die, Raggdoll ragdoll) {
+        yield return new WaitForSeconds(1f);
+        print("3 sec !");
+        die.enabled = false;
+        ragdoll.pelvis.GetComponent<Rigidbody>().AddForce(transform.forward * 5);
+        yield return null;
+    }
+
+    private IEnumerator WaitAndPrint(float waitTime,Animator die)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(waitTime);
+            die.enabled = false;
+            print("WaitAndPrint " + Time.time);
+        }
     }
 }

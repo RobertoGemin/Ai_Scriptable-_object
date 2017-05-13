@@ -43,7 +43,7 @@ public class AIHealth : MonoBehaviour
         if (isSinking)
         {
             // ... move the enemy down by the sinkSpeed per second.
-            transform.Translate(-Vector3.up * sinkSpeed * Time.deltaTime);
+          //  transform.Translate(-Vector3.up * sinkSpeed * Time.deltaTime);
         }
     }
 
@@ -91,7 +91,7 @@ public class AIHealth : MonoBehaviour
         // The enemy is dead.
         isDead = true;
       //  rigbodyGravity.useGravity = false;
-        capsuleCollider.enabled =false;
+      //  capsuleCollider.enabled =false;
         // Turn the collider into a trigger so shots can pass through it.
         //capsuleCollider.isTrigger = true;
 

@@ -35,11 +35,7 @@ namespace CompleteProject
         void Update ()
         {
             // If the enemy should be sinking...
-            if(isSinking)
-            {
-                // ... move the enemy down by the sinkSpeed per second.
-                transform.Translate (-Vector3.up * sinkSpeed * Time.deltaTime);
-            }
+        
         }
 
 
@@ -77,7 +73,7 @@ namespace CompleteProject
             isDead = true;
 
             // Turn the collider into a trigger so shots can pass through it.
-            capsuleCollider.isTrigger = true;
+           // capsuleCollider.isTrigger = true;
 
             // Tell the animator that the enemy is dead.
             anim.SetTrigger ("Dead");
@@ -88,22 +84,6 @@ namespace CompleteProject
         }
 
 
-        public void StartSinking ()
-        {
-            // Find and disable the Nav Mesh Agent.
-          //  GetComponent <UnityEngine.AI.NavMeshAgent> ().enabled = false;
-
-            // Find the rigidbody component and make it kinematic (since we use Translate to sink the enemy).
-            GetComponent <Rigidbody> ().isKinematic = true;
-
-            // The enemy should no sink.
-            isSinking = true;
-
-            // Increase the score by the enemy's score value.
-            //ScoreManager.score += scoreValue;
-
-            // After 2 seconds destory the enemy.
-            Destroy (gameObject, 2f);
-        }
+     
     }
 }
